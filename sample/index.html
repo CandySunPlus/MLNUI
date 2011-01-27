@@ -1,24 +1,134 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
-	<title>MLN Lib & MLNUI</title>
-	<script type="text/javascript" src="../jslib/core/MLN.core.js"></script>
+	<meta http-equiv="Content-Type" content="text/html; charset=GBK" />
+
+	<title>MLN Lib &amp; MLNUI</title>
+	<script type="text/javascript" src="../jslib/core/MLN.core.js">
+</script>
 </head>
+
 <body>
 	<div id="dom1"></div>
-	<div class="dom2"></div>
-	<script type="text/javascript">
-		//console.log(MLN("div"));
-		//var i={"a":false,b:function(e){a=5;}}
-		//var b=MLN.Object.clone(i);
-		//console.log(b);
-		MLN("div").each(function(i){
-			console.log(i);
+
+	<div class="dom2"></div><script type="text/javascript">
+//<![CDATA[
+		var MyClass=MLN.Class.create({
+				initialize:function(name){
+						this.name=name;
+				},
+				setname:function(name){
+						this.name=name;
+				},
+				getname:function(){
+						return this.name;
+				}
 		});
-		a="           123             "
+		
+		var MyNewClass=M.Class.inherit(MyClass,{
+				initialize:function(name,age){
+						this.super_(name);
+						this.age=age;
+				},
+				getname:function(){
+						return this.name+","+this.age+" years";
+				}
+		});
+		
+		var class1=new MyClass('CandySunPlus');
+		console.log(class1.getname());
+		class1.setname('Sun Fengming');
+		console.log(class1.getname());
+		var class2=new MyNewClass('CandySunPlus',23);
+		console.log(class2.getname());
+		var test = MLN.template("my name is {name}, i am \\{sex\\}, i am {old} years old!");
+		test.set('name', 'CandySunPlus').set('old', 23);
+		console.log(test.run());
+		var a="             123             ";
 		console.log(a);
+		console.log(a.trim());
 		console.log(MLN.trim(a));
+		var b="<div>{0}<\/div>{1}";
+		console.log(b.format("indiv","outdiv"));
+		['a','b','c','d'].each(function(i){
+				console.log(this.toString());
+				console.log(i);
+		});
+		console.log(new Date().format('yyyy年MM月dd日 hh时mm分ss秒'));
+		console.log(M.Browser);
+		var test = {
+			init: function(){
+				M.Event.custom(this, ['walk', 'run', 'stop'], {
+					onListener: { 'run': function(){console.log('listener run')}}
+				});
+			},	
+			onWalk: function(){
+				this.fire('walk', 'you can walk');
+			},	
+			onRun: function(){
+				this.fire('run', 'you can run');
+			},	
+			onStop: function(){
+				this.fire('stop', 'you can stop');
+			}
+		};
+		test.init();				
+		test.on('walk', function(e){console.log('tell me: ' + e.data)});
+		test.on('run', function(e){console.log('tell me: ' + e.data)});
+		test.on('stop', function(e){console.log('tell me: ' + e.data)});
+		test.on('walk', function(e){console.log('tell me: ' + e.data);});
+		test.on('walk', function(e){console.log('tell me: ' + e.data)});
+		test.onWalk();
+		M.Cookie.set('mycookies', 'CandySunPlus','','/','u.com');
+		console.log(M.Cookie.get('mycookies'));
+		M.Cookie.del('mycookies','/','u.com');
+		M.Ajax.ajax("do.php",{
+			method: 'post',			//请求方式，post or get(默认)
+			format: 'text',			//返回的格式， text or xml or json(默认)
+			encode: 'GBK',		//请求的编码, UTF-8(默认)
+			async: true,			//是否异步，true(默认)
+			data:'a=5&b=6',
+			success:function(msg){
+				console.log(msg);
+			}
+		});
+		var test = new MLN.Ajax.Model({
+			NANA:{
+				url:	'do.php',	//Ajax请求地址
+				params:	['name', 'age', 'male'],	//参数名数组
+				method:	 'get',	//请求模式
+				format:	'text',		//返回格式
+				cache:	 true		//是否加上时间戳ts，避免服务器缓存结果
+			},
+			MINGMING:{
+				url:	'do.php',	//Ajax请求地址
+				params:	['name', 'age', 'male'],	//参数名数组
+				method:	 'post',		//请求模式
+				format:	'text',		//返回格式
+				cache:	 true		//是否加上时间戳ts，避免服务器缓存结果
+			}
+		});
+		test.NANA({
+			name: 'YuNa',
+			age:	24,
+			male:  false
+		}, {
+			success: function(data){console.log(data);},
+			failure: function(http){console.log(http);},
+			whatever: function(){}
+		});
+		test.MINGMING({
+			name: 'CandySunPlus',
+			age:	23,
+			male:  true
+		}, {
+			success: function(data){console.log(data);},
+			failure: function(http){console.log(http);},
+			whatever: function(){}
+		});
+		//]]>
 	</script>
 </body>
 </html>
