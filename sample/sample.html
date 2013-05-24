@@ -1,0 +1,68 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+	<meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
+	<title>UI Sample</title>
+	<link rel="stylesheet" type="text/css" href="../resrouces/css/default.css" media="all" />
+	<script type="text/javascript" src="../jslib/core/jquery-1.5.1.min.js"></script>
+	<script type="text/javascript" src="../jslib/core/mlnui-core.js"></script>
+	<script type="text/javascript" src="../jslib/core/mlnui-winmanager.js"></script>
+	<script type="text/javascript" src="../jslib/core/mlnui-model.js"></script>
+	<script type="text/javascript" src="../jslib/core/mlnui-dragndrop.js"></script>
+	<script type="text/javascript" src="../jslib/core/mlnui-button.js"></script>
+	<script type="text/javascript" src="../jslib/core/mlnui-toolbar.js"></script>
+	<script type="text/javascript" src="../jslib/core/mlnui-panel.js"></script>
+	<script type="text/javascript" src="../jslib/core/mlnui-window.js"></script>
+	<script type="text/javascript" src="../jslib/core/mlnui-messagebox.js"></script>
+	<!--[if lt IE 7]> 
+		<script type="text/javascript" src="../jslib/hack/ie_png.js"></script>
+		<script type="text/javascript">
+			ie_png.fix('.fixpng'); 
+		</script>
+	<![endif]-->
+</head>
+<body>
+	<div class="panel-dom"></div>
+	<div class="mainbox"></div>
+	<div id="preloadimages"></div>
+    <script type="text/javascript">
+        var myToolbar=new $.MLNUI.Toolbar();
+        myToolbar.render('.mainbox');
+    	var myButton1=new $.MLNUI.Button({text:'戳我一下'});
+    	var myButton2=new $.MLNUI.Button({text:'捅我一下',width:60});
+    	var myButton3=new $.MLNUI.Button({text:'按我一下',width:60});
+    	myToolbar.leftAdd(myButton1,myButton2,myButton3);
+    	$(myButton1).bind('MOUSE_CLICK',function(e){
+    		$.MLNUI.Msg.Confirm('我是一个确认对话框！',null,null,function(btn){
+    			switch(btn){
+    			    case $.MLNUI.Msg.Button.YES:
+    			         $.MLNUI.Msg.Alert('你选择了确认！',null,null);
+    			    break;
+    			    case $.MLNUI.Msg.Button.NO:
+    			         $.MLNUI.Msg.Alert('你选择了取消！',null,null);
+    			    break;
+    			}
+    		});
+    	});
+    	$(myButton2).bind('MOUSE_CLICK',function(e){		 
+            $.MLNUI.Msg.Confirm('我是一个确认对话框！',null,'.panel-dom',function(btn){
+                switch(btn){
+                    case $.MLNUI.Msg.Button.YES:
+                         $.MLNUI.Msg.Alert('你选择了确认！',null,'.panel-dom');
+                    break;
+                    case $.MLNUI.Msg.Button.NO:
+                         $.MLNUI.Msg.Alert('你选择了取消！',null,'.panel-dom');
+                    break;
+                }
+            });
+        });
+        $(myButton3).bind('MOUSE_CLICK',function(e){
+           var myWin=new $.MLNUI.Window({
+               hasMinButton:true,
+               hasMaxButton:true
+           });
+           myWin.show();
+        })   	
+    </script>
+</body>
+</html>
